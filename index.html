@@ -3,109 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Timeline Project - Stage 1</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background-color: #333;
-      color: white;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .theme-toggle {
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      border: none;
-      background-color: #555;
-      color: white;
-      border-radius: 5px;
-    }
-
-    nav {
-      background-color: #ddd;
-      padding: 1rem;
-    }
-
-    #timeline {
-      padding: 2rem;
-      min-height: 300px;
-      background-color: #fff;
-    }
-
-    #modal {
-      display: none;
-    }
-
-    main {
-      padding: 2rem;
-    }
-
-    article {
-      margin-bottom: 2rem;
-    }
-
-    figure {
-      margin: 1rem 0;
-    }
-  </style>
+  <title>Design System Evolution</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
   <header>
-    <div class="logo">🌟 TimelineApp</div>
-    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    <h1>Design System Evolution</h1>
   </header>
 
-  <nav>
-    <!-- Future filter options go here -->
-  </nav>
+  <main class="timeline">
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2018 — Foundation & Guidelines</h2>
+        <p>Defined brand colors, typography, grid system, and spacing rules.</p>
+      </div>
+    </div>
 
-  <main>
-    <section id="timeline">
-      <!-- Timeline events will be added here -->
-    </section>
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2019 — Component Library v1</h2>
+        <p>Built first reusable UI components: buttons, forms, and navigation menus.</p>
+      </div>
+    </div>
 
-    <article>
-      <h2>Welcome to the Timeline</h2>
-      <p>This project visualizes chronological events. More features coming soon!</p>
-    </article>
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2020 — Accessibility Enhancements</h2>
+        <p>Implemented WCAG compliance: high-contrast mode, ARIA labels, and focus states.</p>
+      </div>
+    </div>
 
-    <figure>
-      <!-- Optional: Insert future diagrams/images -->
-    </figure>
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2021 — Responsive & Cross-Platform Expansion</h2>
+        <p>Adopted mobile-first layouts, responsive grids, and tablet-specific UI patterns.</p>
+      </div>
+    </div>
+
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2022 — Design Tokens Introduction</h2>
+        <p>Centralized variables for colors, typography, and spacing for consistency.</p>
+      </div>
+    </div>
+
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2023 — Theming & Personalization</h2>
+        <p>Added light/dark mode and customizable brand themes for different products.</p>
+      </div>
+    </div>
+
+    <div class="timeline-event">
+      <div class="marker"></div>
+      <div class="content">
+        <h2>2024 — AI-Assisted UI Design</h2>
+        <p>Introduced AI-powered layout suggestions and automated component generation.</p>
+      </div>
+    </div>
   </main>
 
-  <div id="modal">
-    <!-- Future modals/popups will be inserted here -->
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Event Details</h2>
+      <p>More details about this event will appear here when you click on a timeline item.</p>
+    </div>
   </div>
-
-  <script>
-    function toggleTheme() {
-      const body = document.body;
-      const currentBg = getComputedStyle(body).backgroundColor;
-      if (currentBg === 'rgb(244, 244, 244)') {
-        body.style.backgroundColor = '#121212';
-        body.style.color = '#fff';
-      } else {
-        body.style.backgroundColor = '#f4f4f4';
-        body.style.color = '#333';
-      }
-    }
-  </script>
-
 </body>
 </html>
