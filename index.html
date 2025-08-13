@@ -1,134 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Design System Evolution</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Design System Evolution — Interactive Timeline</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    body { background: #fff0f5; font-family: 'Segoe UI', sans-serif; }
-    .bg-pink { background-color: #ffb6c1 !important; }
-    .timeline { position: relative; padding: 2rem; max-width: 1000px; margin: auto; }
-    .timeline::before { content: ""; position: absolute; left: 50%; width: 4px; background: pink; top: 0; bottom: 0; }
-    .timeline-item { position: relative; width: 50%; padding: 1rem 2rem; }
-    .timeline-item.left { left: 0; }
-    .timeline-item.right { left: 50%; }
-    .timeline-item::before { content: ""; position: absolute; top: 15px; width: 20px; height: 20px; background: deeppink; border-radius: 50%; border: 3px solid white; }
-    .timeline-item.left::before { right: -10px; }
-    .timeline-item.right::before { left: -10px; }
-    .timeline-card { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .timeline-card:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.15); cursor: pointer; }
+    /* OPTIONAL: small aesthetic upgrades if you don't want to touch styles.css */
+    :root {
+      --bg: #fff7fb;
+      --ink: #2a2a2a;
+      --accent: #ff5ca8;
+      --accent-2: #7c4dff;
+      --muted: #777;
+      --card: #ffffff;
+      --ring: rgba(255, 92, 168, 0.35);
+    }
+    body { margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:linear-gradient(180deg, var(--bg), #fff); }
+    header { position:sticky; top:0; backdrop-filter:saturate(1.2) blur(6px); background:rgba(255,255,255,.7); border-bottom:1px solid #f3e5f5; z-index:10; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px 16px; }
+    nav { display:flex; align-items:center; gap:12px; }
+    nav a { text-decoration:none; color:#444; padding:8px 12px; border-radius:999px; }
+    nav a.active, nav a:hover { background:#ffe3f0; color:#d81b60; }
+    .hero { padding:28px 16px 8px; }
+    .title { font-weight:800; font-size: clamp(24px, 4vw, 36px); letter-spacing:.2px; }
+    .subtitle { color:var(--muted); margin-top:6px; }
+    .controls { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 6px; }
+    .chip { border:1px solid #f2cde0; background:#fff; color:#b31267; padding:6px 12px; border-radius:999px; cursor:pointer; font-size:14px; }
+    .chip.active { background:linear-gradient(90deg, #ffd1e6, #e9d7ff); border-color:transparent; }
+    /* Timeline */
+    #timeline { position:relative; margin: 10px 0 48px; padding-left: 26px; }
+    #timeline::before { content:""; position:absolute; left:14px; top:0; bottom:0; width:4px; background:linear-gradient(#ffd1e6, #e9d7ff); border-radius:4px; }
+    .event { position:relative; margin: 18px 0; padding: 12px 12px 12px 16px; border-radius:14px; background:var(--card); box-shadow:0 2px 14px rgba(0,0,0,.05); border:1px solid #f5e3ff; transition: transform .2s ease, box-shadow .2s ease; cursor:pointer; }
+    .event:hover { transform: translateY(-2px); box-shadow:0 8px 24px rgba(124,77,255,.12); }
+    .dot { position:absolute; left:-8px; top:18px; width:16px; height:16px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 4px var(--ring); background:var(--accent); }
+    .event[data-category="process"] .dot { background:#7c4dff; }
+    .event[data-category="component"] .dot { background:#ff5ca8; }
+    .event[data-category="tooling"] .dot { background:#00bcd4; }
+    .eyebrow { font-size:12px; color:#9c27b0; font-weight:600; letter-spacing:.3px; text-transform:uppercase; }
+    .h3 { font-size:18px; font-weight:700; margin:4px 0; }
+    .desc { color:#555; font-size:14px; }
+    .thumb { margin-top:10px; border-radius:10px; width:100%; max-height:220px; object-fit:cover; border:1px solid #f3e5f5; }
+    /* Modal */
+    #modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(18,18,18,.48); z-index:50; }
+    #modal.open { display:flex; }
+    .sheet { width:min(800px, 92vw); background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 20px 80px rgba(0,0,0,.25); }
+    .sheet header { position:relative; background:linear-gradient(90deg, #ffd1e6, #e9d7ff); border:0; }
+    .sheet h2 { margin:16px; font-size:22px; }
+    .sheet .body { padding:16px; line-height:1.55; color:#333; }
+    .sheet img { width:100%; max-height:320px; object-fit:cover; display:block; }
+    .close { position:absolute; right:12px; top:10px; font-size:24px; background:transparent; border:0; cursor:pointer; color:#5a246e; }
+    @media (min-width: 768px) { .grid { display:grid; grid-template-columns: 1fr 320px; gap:18px; align-items:start; } }
   </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="active" href="#">Timeline</a>
+        <a href="#">Guidelines</a>
+        <a href="#">Components</a>
+        <a href="#">Tokens</a>
+      </nav>
+    </div>
+  </header>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold text-danger" href="#">DesignSys</a>
-    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#timeline">Timeline</a></li>
-        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero -->
-<header class="text-center p-5 bg-pink">
-  <h1 class="fw-bold">Design System Evolution</h1>
-  <p class="lead">From brand guidelines to AI-driven UI design</p>
-</header>
-
-<!-- Timeline -->
-<section id="timeline" class="timeline">
-  <div class="timeline-item left">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2018 — Foundation" data-desc="Established brand colors, typography, spacing rules, and a 12-column grid.">
-      <h5>2018 — Foundation</h5>
-      <p>Brand colors, typography, spacing...</p>
-    </div>
-  </div>
-  <div class="timeline-item right">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2019 — Component Library v1" data-desc="Introduced reusable UI components like buttons, forms, nav menus, and cards.">
-      <h5>2019 — Component Library v1</h5>
-      <p>First reusable components...</p>
-    </div>
-  </div>
-  <div class="timeline-item left">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2020 — Accessibility Upgrade" data-desc="Achieved WCAG 2.1 AA compliance with ARIA labels, keyboard navigation, and high-contrast mode.">
-      <h5>2020 — Accessibility Upgrade</h5>
-      <p>WCAG compliance...</p>
-    </div>
-  </div>
-  <div class="timeline-item right">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2021 — Responsive Expansion" data-desc="Adopted mobile-first design, responsive grids, and device-specific UI patterns.">
-      <h5>2021 — Responsive Expansion</h5>
-      <p>Mobile-first layouts...</p>
-    </div>
-  </div>
-  <div class="timeline-item left">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2022 — Design Tokens" data-desc="Centralized variables for colors, spacing, typography, and shadows for easy scaling.">
-      <h5>2022 — Design Tokens</h5>
-      <p>Centralized style values...</p>
-    </div>
-  </div>
-  <div class="timeline-item right">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2023 — Theming & Personalization" data-desc="Introduced dark mode, light mode, and brand-based theming for multiple products.">
-      <h5>2023 — Theming & Personalization</h5>
-      <p>Dark/light mode...</p>
-    </div>
-  </div>
-  <div class="timeline-item left">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2024 — AI-Assisted Design" data-desc="Launched AI-powered layout suggestions, content-aware scaling, and smart component generation.">
-      <h5>2024 — AI-Assisted Design</h5>
-      <p>AI-powered layouts...</p>
-    </div>
-  </div>
-  <div class="timeline-item right">
-    <div class="timeline-card" data-bs-toggle="modal" data-bs-target="#eventModal" data-title="2025 — Global Collaboration" data-desc="Enabled multi-language support, live collaborative editing, and automated quality checks.">
-      <h5>2025 — Global Collaboration</h5>
-      <p>Multi-language & live edits...</p>
-    </div>
-  </div>
-</section>
-
-<!-- Modal -->
-<div class="modal fade" id="eventModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <main class="wrap">
+    <section class="hero">
+      <div class="title">Design System Evolution</div>
+      <p class="subtitle">Key milestones in how our design system matured—foundations, components, process, and tooling.</p>
+      <div class="controls">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="process">Process</button>
+        <button class="chip" data-filter="component">Component</button>
+        <button class="chip" data-filter="tooling">Tooling</button>
       </div>
-      <div class="modal-body"></div>
+    </section>
+
+    <section id="timeline" aria-live="polite" aria-label="Design system timeline">
+      <!-- events render here by script.js -->
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="sheet">
+      <header>
+        <h2 id="modal-title">Title</h2>
+        <button class="close" aria-label="Close">&times;</button>
+      </header>
+      <img id="modal-image" alt="">
+      <div class="body grid">
+        <div>
+          <p id="modal-desc"></p>
+        </div>
+        <aside>
+          <div class="eyebrow">Year</div>
+          <div id="modal-year" class="h3"></div>
+          <div class="eyebrow" style="margin-top:10px;">Category</div>
+          <div id="modal-category" class="h3"></div>
+        </aside>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- About -->
-<section id="about" class="p-5 text-center">
-  <h2>About This Project</h2>
-  <p>This timeline chronicles our design system’s transformation into a scalable, accessible, and intelligent platform.</p>
-</section>
-
-<!-- Contact -->
-<section id="contact" class="p-5 bg-light text-center">
-  <h2>Contact</h2>
-  <p>Email: <a href="mailto:design@example.com">design@example.com</a></p>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.getElementById('eventModal').addEventListener('show.bs.modal', function (e) {
-  const btn = e.relatedTarget;
-  this.querySelector('.modal-title').textContent = btn.getAttribute('data-title');
-  this.querySelector('.modal-body').textContent = btn.getAttribute('data-desc');
-});
-</script>
+  <!-- Load JS at end of body -->
+  <script src="script.js" defer></script>
 </body>
 </html>

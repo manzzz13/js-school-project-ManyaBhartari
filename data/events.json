@@ -1,0 +1,58 @@
+[
+  {
+    "year": 2019,
+    "title": "Foundations v1",
+    "description": "Initial color tokens, type scale, and spacing ramp defined for product parity.",
+    "imageURL": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200",
+    "category": "process"
+  },
+  {
+    "year": 2020,
+    "title": "Components Alpha",
+    "description": "Button, Input, Modal and Tooltip introduced with accessibility baselines.",
+    "imageURL": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200",
+    "category": "component"
+  },
+  {
+    "year": 2020,
+    "title": "Lint & Theming",
+    "description": "Stylelint rules and light/dark theming via CSS variables.",
+    "imageURL": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200",
+    "category": "tooling"
+  },
+  {
+    "year": 2021,
+    "title": "Design Tokens v2",
+    "description": "Adopted token pipeline for mode-aware colors and semantic elevation.",
+    "imageURL": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=1200",
+    "category": "process"
+  },
+  {
+    "year": 2022,
+    "title": "Patterns Library",
+    "description": "Form patterns, tables, and empty states documented with guidelines.",
+    "imageURL": "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200",
+    "category": "component"
+  },
+  {
+    "year": 2022,
+    "title": "Figma ↔ Code Sync",
+    "description": "Auto-export tokens to NPM; Figma library validation workflow.",
+    "imageURL": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200",
+    "category": "tooling"
+  },
+  {
+    "year": 2023,
+    "title": "Accessibility Pass",
+    "description": "Audit + fixes for focus, contrast, keyboard flows; added testing scripts.",
+    "imageURL": "https://images.unsplash.com/photo-1505238680356-667803448bb6?q=80&w=1200",
+    "category": "process"
+  },
+  {
+    "year": 2024,
+    "title": "Charts & Data Viz",
+    "description": "Introduced chart primitives and guidelines for color, motion, and density.",
+    "imageURL": "https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=1200",
+    "category": "component"
+  }
+]
